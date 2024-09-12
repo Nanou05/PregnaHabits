@@ -117,7 +117,7 @@ for article in article_details['PubmedArticle']:
 
 
 
-########################################### Embedding ################################################
+########################################### Embeddings ################################################
 
 # BERT embeddings
 
@@ -146,5 +146,69 @@ embeddings = get_bert_embeddings(preprocessed_texts)
 # Show the embeddings for the 5 first articles
 for i, embedding in enumerate(embeddings[:5]):
     print(f"Embedding pour l'article {i+1}:\n{embedding}\n")
+
+
+
+
+# TF-IDF Representations
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+import pandas as pd
+
+
+# Create the TF-IDF vectorizer
+vectorizer = TfidfVectorizer()
+
+# Transform the preprocessed snippets  into TF-IDF vectors
+tfidf_matrix = vectorizer.fit_transform(preprocessed_texts)
+tfidf_matrix
+
+# Transform the TF-IDF matrix into a DataFrame for visualization
+tfidf_df = pd.DataFrame(tfidf_matrix.toarray(), columns=vectorizer.get_feature_names_out())
+
+# Show the heading the TF-IDF matrix
+print(tfidf_df.head())
+
+# Save the TF-IDF matrix in a CSV File 
+output_path = './output/tfidf_abstracts.csv'
+tfidf_df.to_csv(output_path, index=False)
+
+
+# Function to plot the co-occurrence matrix
+def plot_cooccurrence_matrix(text_data, Articles, top_n_words=20):
+    # Vectorize the text
+    vectorizer = CountVectorizer(max_df=0.9, min_df=2, stop_words='english')
+    dtm = vectorizer.fit_transform(text_data)
+    words = vectorizer.get_feature_names_out()
+
+    # Compute the co-occurrence matrix
+    cooccurrence_matrix = (dtm.T * dtm)
+    cooccurrence_matrix.setdiag(0)
+    cooccurrence_matrix = cooccurrence_matrix.toarray()
+    
+    # Normalize the co-occurrence matrix
+    cooccurrence_matrix_normalized = cooccurrence_matrix / cooccurrence_matrix.max()
+
+    # Apply the log transformation
+    cooccurrence_matrix_log = np.log1p(cooccurrence_matrix_normalized)
+
+    # Get the top n words most present in the corpus
+    word_counts = np.array(dtm.sum(axis=0)).flatten()
+    top_n_indices = word_counts.argsort()[-top_n_words:]
+    top_words = [words[i] for i in top_n_indices]
+
+    # Plot the co-occurrence matrix pour for the top N words
+    top_cooccurrence_matrix = cooccurrence_matrix_log[top_n_indices][:, top_n_indices]
+
+    plt.figure(figsize=(10, 10))
+    plt.imshow(top_cooccurrence_matrix, cmap='viridis')
+    plt.xticks(range(len(top_words)), top_words, rotation=90)
+    plt.yticks(range(len(top_words)), top_words)
+    plt.colorbar()
+    plt.title(f'Matrice de Co-occurrence pour {Articles}')
+    plt.show()
+    
+
+plot_cooccurrence_matrix(preprocessed_texts, 'Articles', top_n_words=20)
 
 
