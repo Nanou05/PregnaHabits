@@ -212,3 +212,63 @@ def plot_cooccurrence_matrix(text_data, Articles, top_n_words=20):
 plot_cooccurrence_matrix(preprocessed_texts, 'Articles', top_n_words=20)
 
 
+
+
+from nltk.corpus import stopwords
+from wordcloud import WordCloud
+from sklearn.decomposition import LatentDirichletAllocation
+import gensim
+from gensim import corpora
+
+# Generate the word clouds
+def generate_word_cloud(text, title):
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.title(title)
+    plt.axis('off')
+    plt.show()
+
+# generate the combined text for the word clouds
+combined_text = ' '.join(preprocessed_texts)
+
+# Show the word clouds
+generate_word_cloud(combined_text, 'Word Cloud for Articles')
+
+# Function for topic extraction
+def extract_topics(texts, num_topics=5, num_words=10):
+    # Text pretreatement
+    texts = [text.split() for text in texts]
+    
+    # Create the dictionnary and the corpus
+    dictionary = corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(text) for text in texts]
+    
+    # Apply the LDA model
+    lda_model = gensim.models.ldamodel.LdaModel(corpus, num_topics=num_topics, id2word=dictionary, passes=15)
+    
+    # Extract the topics
+    topics = []
+    for topic in lda_model.print_topics(num_words=num_words):
+        topic_words = [word.split('*')[1].strip('"') for word in topic[1].split(' + ')]
+        topics.append(topic_words)
+    return topics
+
+
+topics = extract_topics(preprocessed_texts)
+
+# Show the topics
+print("Topics:")
+for i, topic in enumerate(topics):
+    print(f"Topic {i+1}: {', '.join(topic)}")
+
+# Visualize the topics via the words clouds
+def plot_topics_wordclouds(topics, title_prefix):
+    for i, topic in enumerate(topics):
+        text = ' '.join(topic)
+        generate_word_cloud(text, f'{title_prefix} Topic {i+1}')
+
+plot_topics_wordclouds(topics, 'Articles')
+
+
+
