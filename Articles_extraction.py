@@ -2,7 +2,7 @@
 """
 Created on Apr 12 10:30:00 2024
 
-@author: Nanou Ouben
+@author: N Ouben
 """
 
 # Importing important libraries
