@@ -95,6 +95,19 @@ additional_stopwords = {
 
 # Text cleaning function 
 def further_clean_text(text):
+    
+    '''
+    Parameters
+    ----------
+    text : string
+        Comments' textual content.
+
+    Returns
+    -------
+    string
+        cleaned, lowercased, tokenized text.
+    '''
+    
     # Lowercasing
     words = re.findall(r'\b\w+\b', str(text).lower())
     # Removing the stopwords
@@ -108,6 +121,23 @@ def further_clean_text(text):
     return ' '.join(filtered_words)
 
 def generate_word_cloud(text, title, file_path):
+    
+    '''
+    Parameters
+    ----------
+    text : string
+        cleaned comments' textual content.
+    title : string
+        comments' titles.
+    file_path : string
+        the path to the dataset.
+
+    Returns
+    -------
+    a plot of a wordcloud.
+
+    '''
+    
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
     plt.figure(figsize=(10, 5))
     plt.imshow(wordcloud, interpolation='bilinear')
@@ -117,6 +147,23 @@ def generate_word_cloud(text, title, file_path):
     plt.show()
 
 def extract_topics(text_data, num_topics=5, num_words=10):
+    
+    '''
+    Parameters
+    ----------
+    text_data : string
+        cleaned comments' text.
+    num_topics : int, optional
+        Sets the number of topics to show. The default is 5.
+    num_words : int, optional
+        Sets the number of words present in a topic. The default is 10.
+
+    Returns
+    -------
+    topics : string
+        The prevalent topics in the text.
+    '''
+    
     vectorizer = CountVectorizer(max_df=0.9, min_df=2, stop_words='english')
     dtm = vectorizer.fit_transform(text_data)
     lda = LatentDirichletAllocation(n_components=num_topics, random_state=42)
@@ -127,6 +174,7 @@ def extract_topics(text_data, num_topics=5, num_words=10):
         topics.append([vectorizer.get_feature_names_out()[i] for i in topic.argsort()[-num_words:]])
 
     return topics
+
 
 def plot_cooccurrence_matrix(text_data, forum_name, top_n_words=20):
     vectorizer = CountVectorizer(max_df=0.9, min_df=2, stop_words='english')
