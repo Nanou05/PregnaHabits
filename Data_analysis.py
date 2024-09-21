@@ -177,6 +177,23 @@ def extract_topics(text_data, num_topics=5, num_words=10):
 
 
 def plot_cooccurrence_matrix(text_data, forum_name, top_n_words=20):
+    
+    '''
+    Parameters
+    ----------
+    text_data : string
+        comments' cleaned textual content.
+    forum_name : string
+        name of the forum where the data was scraped from.
+    top_n_words : int, optional
+        Number of words composing the co-occurrence matrix. The default is 20.
+
+    Returns
+    -------
+    a plot of the co-occurrence matrix.
+
+    '''
+    
     vectorizer = CountVectorizer(max_df=0.9, min_df=2, stop_words='english')
     dtm = vectorizer.fit_transform(text_data)
     words = vectorizer.get_feature_names_out()
