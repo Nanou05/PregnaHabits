@@ -1,9 +1,75 @@
 # PregnaHabits
 
-## Study of effects of some unhealthy Life styles during pregnancy on the heath of the infant
+## Project Overview
 
+PregnaHabits is a research project aimed at studying the effects of certain unhealthy lifestyle choices during pregnancy on infant health. This project utilizes various data collection and analysis techniques, including web scraping, Reddit data extraction, sentiment analysis, and machine learning models.
 
-### Description of the Python script
+## Project Goal
+
+The primary goal of PregnaHabits is to investigate and analyze the potential impacts of unhealthy lifestyle habits during pregnancy on the health outcomes of infants. By leveraging diverse data sources and advanced analytical techniques, this project seeks to provide insights that could inform prenatal care practices and public health initiatives.
+
+## Project Structure
+
+The project consists of the following files:
+
+1. `Articles_extraction.py`: Script for extracting relevant articles from web sources.
+2. `Data_analysis.py`: Main script for analyzing the collected data.
+3. `Reddit_scraping_main.py`: Main script for scraping data from Reddit.
+4. `Sentiment_analysis.py`: Script for performing sentiment analysis on the collected text data.
+5. `model.py`: Contains the machine learning models used in the project.
+6. `reddit_scraping.py`: Contains functions for scraping data from Reddit.
+7. `requirements.txt`: List of Python dependencies required for the project.
+8. `web_data_preprocessing.py`: Script for preprocessing data collected from web sources.
+9. `web_scraping.py`: Contains functions for general web scraping tasks.
+
+## Setup and Installation
+
+To set up the project environment:
+
+1. Clone this repository to your local machine.
+2. Ensure you have Python 3.7+ installed.
+3. Install the required dependencies:
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+## Usage
+
+To run the project:
+
+1. Start with data collection by running the web scraping and Reddit scraping scripts:
+
+   ```
+   python web_scraping.py
+   python Reddit_scraping_main.py
+   ```
+
+2. Preprocess the collected data:
+
+   ```
+   python web_data_preprocessing.py
+   ```
+
+3. Perform sentiment analysis:
+
+   ```
+   python Sentiment_analysis.py
+   ```
+
+4. Run the main data analysis script:
+
+   ```
+   python Data_analysis.py
+   ```
+
+5. If using machine learning models, run:
+
+   ```
+   python model.py
+   ```
+
+## Description of the Python scripts
 
 #### `articles_extraction.py`
 
@@ -54,3 +120,14 @@
 - **Outputs**:
   - `output/tfidf_abstracts.csv`: Contains the TF-IDF matrix of the articles.
   - Visualizations generated in the script (word clouds, co-occurrence matrices, etc.).
+
+## Contributing
+
+Contributions to PregnaHabits are welcome. Please fork the repository and submit a pull request with your proposed changes.
+
+## Ethics and Privacy
+
+This project involves collecting and analyzing sensitive data related to pregnancy and infant health. All data collection and usage complies with relevant privacy laws and ethical guidelines (GDPR). Personal data is not collected and any collected information won't be shared on this repo.
+
+## License
+(yet to be defined)
